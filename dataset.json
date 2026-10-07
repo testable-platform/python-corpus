@@ -33,7 +33,7 @@
   "toolsDegraded": 1,
   "branchFunctional": true,
   "backendNote": "poetry-core 2.4.1 -- the current latest release. Being on the 2.x line, it emits PEP 621 [project] rather than [tool.poetry], which is what makes the poetry-core + uv pairing resolvable; the 1.x releases the older families were held to could not express that table and left two branches of the grid unlockable.",
-  "packageManagerNote": "conda can create a python=3.9.23 environment from conda-forge, but conda.anaconda.org and repo.anaconda.com are 403 at this build host's egress proxy, so no solved lock could be produced here. environment.yml is complete and solves on the operator's machine.",
+  "packageManagerNote": "conda can create a python=3.14.0rc2 environment from conda-forge, but conda.anaconda.org and repo.anaconda.com are 403 at this build host's egress proxy, so no solved lock could be produced here. environment.yml is complete and solves on the operator's machine.",
   "testRunner": "pytest==9.1.1",
   "plantedFixtures": {
     "duplication": [
