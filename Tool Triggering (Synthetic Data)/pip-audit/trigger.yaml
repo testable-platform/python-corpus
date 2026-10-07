@@ -8,7 +8,7 @@ python_version_verified: "3.9.23"
 pin: pip-audit==2.10.1
 declared_floor: ">=3.10"
 status: inactive
-entrypoint: tools/pip-audit/run_pip_audit.sh
+entrypoint: Tool Triggering (Synthetic Data)/pip-audit/run_pip_audit.sh
 outputs: reports/pip-audit.json
 expects: >-
   advisories against all five planted pins (69 in total as of 3 Sep 2026)
