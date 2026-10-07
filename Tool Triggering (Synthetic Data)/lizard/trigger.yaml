@@ -8,7 +8,7 @@ python_version_verified: "3.6.15"
 pin: lizard==1.24.0
 declared_floor: null   # distribution declares no Requires-Python
 status: inactive-silent
-entrypoint: tools/lizard/run_lizard.sh
+entrypoint: Tool Triggering (Synthetic Data)/lizard/run_lizard.sh
 outputs: reports/lizard.csv
 expects: >-
   a per-function CCN table agreeing with radon on classify_shipment
