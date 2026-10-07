@@ -8,7 +8,7 @@ python_version_verified: "3.12.11"
 pin: complexipy==8.0.0
 declared_floor: ">=3.8"
 status: active
-entrypoint: tools/complexipy/run_complexipy.sh
+entrypoint: Tool Triggering (Synthetic Data)/complexipy/run_complexipy.sh
 outputs: reports/complexipy.json
 expects: >-
   classify_shipment above the cognitive threshold of 15
