@@ -62,6 +62,6 @@ pyan3 read the same file without incident.
 ## Running the tools against it
 
 ```
-bash tools/beniget/run_beniget.sh      # includes this directory
-python tools/tool_integration.py --run
+bash "Tool Triggering (Synthetic Data)/beniget/run_beniget.sh"      # includes this directory
+python "Tool Triggering (Synthetic Data)/tool_integration.py" --run
 ```
