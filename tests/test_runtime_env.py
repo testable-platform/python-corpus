@@ -75,7 +75,7 @@ def test_path_walk_exists():
 
 
 def test_sys_monitoring_exists():
-    # PEP 669, new in 3.12. tools/settrace/ deliberately does NOT use this --
+    # PEP 669, new in 3.12. Tool Triggering (Synthetic Data)/settrace/ deliberately does NOT use this --
     # it uses sys.settrace, because it must run on every family including 3.6.
     assert hasattr(sys, "monitoring")
 
