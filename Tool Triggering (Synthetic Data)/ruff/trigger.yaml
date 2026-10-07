@@ -8,7 +8,7 @@ python_version_verified: "3.6.15"
 pin: ruff==0.16.5
 declared_floor: ">=3.7"
 status: inactive
-entrypoint: tools/ruff/run_ruff.sh
+entrypoint: Tool Triggering (Synthetic Data)/ruff/run_ruff.sh
 outputs: reports/ruff.json
 expects: >-
   the same planted violations pylint reports, as an independent parser
