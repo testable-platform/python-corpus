@@ -88,8 +88,8 @@ that reason.
 ## Build
 
 ```
-make setup        # curl -LsSf https://astral.sh/uv/install.sh | sh
-make install      # uv sync
+curl -LsSf https://astral.sh/uv/install.sh | sh
+uv sync
 ```
 
 > **This branch cannot be built.** `uv` refuses Python 3.6.15 before it reaches resolution, and no earlier release admits it either. The configuration above is complete and correct; it is simply unreachable. `uv.lock.MISSING` is committed in place of the lockfile so the absence is explicit rather than looking like an oversight, and `dataset.json` records it as `branchFunctional: false`.
@@ -105,8 +105,8 @@ python -m orderlab
 ## Test
 
 ```
-make test         # pytest 7.0.1
-make check        # Tool Triggering (Synthetic Data)/full_check.py -- cross-file consistency audit
+python -m pytest -q   # pytest 7.0.1
+python "Tool Triggering (Synthetic Data)/full_check.py"   # cross-file consistency audit
 ```
 
 pytest is pinned at 7.0.1, the last release admitting Python 3.6. It is
@@ -120,11 +120,14 @@ python-corpus/  (PY_V36_POETRY_UV_MONO)
 |-- .github/  (1 files)
 |-- src/  (20 files)
 |-- tests/  (7 files)
-|-- Tool Triggering (Synthetic Data)/  (74 files)
+|-- Tool Clean (Synthetic Data)/  (1020 files)
+|-- Tool Invalid (Synthetic Data)/  (1186 files)
+|-- Tool Triggering (Synthetic Data)/  (76 files)
+|-- Tool Triggering (Tool Github Test data)/  (20671 files)
 |-- .editorconfig
 |-- .gitignore
 |-- .python-version
-|-- Makefile
+|-- README.md
 |-- dataset.json
 |-- pyproject.toml
 |-- pytest.ini
@@ -151,12 +154,15 @@ Three sibling folders sit at the repo root, alongside this branch's own
 `Tool Triggering (Synthetic Data)/` (above).
 
 ### `Tool Triggering (Tool Github Test data)/`
-Each of the 28 tool subfolders is that tool's own real upstream test suite,
+Each of the 26 tool subfolders is that tool's own real upstream test suite,
 pulled as-is from its actual GitHub project -- not generated. `Radon/` is
 radon's own pytest suite; `pydriller/` is pydriller's own test suite;
+`settrace/` is CPython's own `Lib/test/test_sys_settrace.py` (tag v3.14.8),
+because `sys.settrace` is a CPython feature with no tool project of its own;
 `Opengrep/` is the real opengrep/semgrep test corpus (1,000+ files of rules,
-parsing fixtures and snapshots). A correct run finds whatever that upstream
-project's own tests genuinely contain.
+parsing fixtures and snapshots). `pymcdc` and `cognitive-ast` have no public
+upstream test suite, so they have no folder here. A correct run finds whatever
+that upstream project's own tests genuinely contain.
 
 ### `Tool Clean (Synthetic Data)/`
 25 of the 28 tools each carry 5 generated fixture packages, one per Python
@@ -167,7 +173,7 @@ the **Tool Clean (100% pass)** condition. The remaining 3 tools
 (`diff-cover`, `dulwich`, `pydriller`) operate on git history rather than
 interpreter syntax, so each carries one real git repository's worth of
 history instead of 5 per-version copies -- restored from `_git-bundles/`
-via `restore-invalid-git.ps1` rather than kept as a live `.git` folder, so a
+via `restore-clean-git.ps1` rather than kept as a live `.git` folder, so a
 plain file copy never silently drops their content. `_generator/` holds the
 scripts that built every fixture.
 
