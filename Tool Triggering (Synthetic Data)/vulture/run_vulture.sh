@@ -5,7 +5,7 @@ set -uo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "$HERE/../.." && pwd)"
 # shellcheck source=/dev/null
-. "$ROOT/tools/_skip.sh"
+. "$ROOT/Tool Triggering (Synthetic Data)/_skip.sh"
 
 SRC="src"
 PKG="orderlab"
@@ -17,7 +17,7 @@ mkdir -p "$ROOT/reports"
 cd "$ROOT"
 
 FINDINGS_EXIT=1   # non-zero from this tool means 'found something', not 'broke'
-"$PYBIN" -m vulture "$SRC/$PKG" tools/vulture/whitelist.py --min-confidence 60
+"$PYBIN" -m vulture "$SRC/$PKG" "Tool Triggering (Synthetic Data)/vulture/whitelist.py" --min-confidence 60
 rc=$?
 accept_findings "vulture" "$rc" "reports/vulture.txt"
 exit $?
