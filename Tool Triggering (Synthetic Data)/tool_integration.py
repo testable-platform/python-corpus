@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 """Tool integration entry point for branch PY-003.
 
-  python tools/tool_integration.py            banner
-  python tools/tool_integration.py --verify   check every tool is wired
-  python tools/tool_integration.py --run      run every tool, honouring skips
+  python "Tool Triggering (Synthetic Data)/tool_integration.py"            banner
+  python "Tool Triggering (Synthetic Data)/tool_integration.py" --verify   check every tool is wired
+  python "Tool Triggering (Synthetic Data)/tool_integration.py" --run      run every tool, honouring skips
 
 Exit codes from a --run mirror the runners' own contract:
 
@@ -27,67 +27,67 @@ import subprocess
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TOOLS_DIR = os.path.join(ROOT, "tools")
+TOOLS_DIR = os.path.join(ROOT, "Tool Triggering (Synthetic Data)")
 
 WIRING = [
     {"dir": "crosshair", "label": "CrossHair", "role": "primary",
-     "entrypoint": "tools/crosshair/run_crosshair.sh", "status": "inactive"},
+     "entrypoint": "Tool Triggering (Synthetic Data)/crosshair/run_crosshair.sh", "status": "inactive"},
     {"dir": "coverage", "label": "Coverage.py", "role": "primary",
-     "entrypoint": "tools/coverage/run_coverage.sh", "status": "inactive"},
+     "entrypoint": "Tool Triggering (Synthetic Data)/coverage/run_coverage.sh", "status": "inactive"},
     {"dir": "pymcdc", "label": "Pymcdc", "role": "primary",
-     "entrypoint": "tools/pymcdc/run_pymcdc.sh", "status": "inactive"},
+     "entrypoint": "Tool Triggering (Synthetic Data)/pymcdc/run_pymcdc.sh", "status": "inactive"},
     {"dir": "radon", "label": "Radon", "role": "primary",
-     "entrypoint": "tools/radon/run_radon.sh", "status": "active"},
+     "entrypoint": "Tool Triggering (Synthetic Data)/radon/run_radon.sh", "status": "active"},
     {"dir": "lizard", "label": "Lizard", "role": "primary",
-     "entrypoint": "tools/lizard/run_lizard.sh", "status": "inactive-silent"},
+     "entrypoint": "Tool Triggering (Synthetic Data)/lizard/run_lizard.sh", "status": "inactive-silent"},
     {"dir": "testmon", "label": "testmon", "role": "primary",
-     "entrypoint": "tools/testmon/run_testmon.sh", "status": "inactive"},
+     "entrypoint": "Tool Triggering (Synthetic Data)/testmon/run_testmon.sh", "status": "inactive"},
     {"dir": "cognitive-ast", "label": "cognitive-ast", "role": "primary",
-     "entrypoint": "tools/cognitive-ast/run_cognitive_ast.py", "status": "active"},
+     "entrypoint": "Tool Triggering (Synthetic Data)/cognitive-ast/run_cognitive_ast.py", "status": "active"},
     {"dir": "jscpd", "label": "jscpd", "role": "primary",
-     "entrypoint": "tools/jscpd/run_jscpd.sh", "status": "active"},
+     "entrypoint": "Tool Triggering (Synthetic Data)/jscpd/run_jscpd.sh", "status": "active"},
     {"dir": "pylint", "label": "pylint", "role": "primary",
-     "entrypoint": "tools/pylint/run_pylint.sh", "status": "inactive"},
+     "entrypoint": "Tool Triggering (Synthetic Data)/pylint/run_pylint.sh", "status": "inactive"},
     {"dir": "semgrep", "label": "Semgrep OSS", "role": "primary",
-     "entrypoint": "tools/semgrep/run_semgrep.sh", "status": "inactive"},
+     "entrypoint": "Tool Triggering (Synthetic Data)/semgrep/run_semgrep.sh", "status": "inactive"},
     {"dir": "bandit", "label": "Bandit", "role": "primary",
-     "entrypoint": "tools/bandit/run_bandit.sh", "status": "inactive"},
+     "entrypoint": "Tool Triggering (Synthetic Data)/bandit/run_bandit.sh", "status": "inactive"},
     {"dir": "pip-audit", "label": "pip-audit", "role": "primary",
-     "entrypoint": "tools/pip-audit/run_pip_audit.sh", "status": "inactive"},
+     "entrypoint": "Tool Triggering (Synthetic Data)/pip-audit/run_pip_audit.sh", "status": "inactive"},
     {"dir": "cosmic-ray", "label": "cosmic-ray", "role": "primary",
-     "entrypoint": "tools/cosmic-ray/run_cosmic_ray.sh", "status": "inactive"},
+     "entrypoint": "Tool Triggering (Synthetic Data)/cosmic-ray/run_cosmic_ray.sh", "status": "inactive"},
     {"dir": "beniget", "label": "Beniget", "role": "primary",
-     "entrypoint": "tools/beniget/run_beniget.py", "status": "active"},
+     "entrypoint": "Tool Triggering (Synthetic Data)/beniget/run_beniget.py", "status": "active"},
     {"dir": "pydriller", "label": "PyDriller", "role": "primary",
-     "entrypoint": "tools/pydriller/run_pydriller.py", "status": "inactive-silent"},
+     "entrypoint": "Tool Triggering (Synthetic Data)/pydriller/run_pydriller.py", "status": "inactive-silent"},
     {"dir": "ruff", "label": "Ruff", "role": "alternative",
-     "entrypoint": "tools/ruff/run_ruff.sh", "status": "inactive"},
+     "entrypoint": "Tool Triggering (Synthetic Data)/ruff/run_ruff.sh", "status": "inactive"},
     {"dir": "complexipy", "label": "complexipy", "role": "alternative",
-     "entrypoint": "tools/complexipy/run_complexipy.sh", "status": "inactive"},
+     "entrypoint": "Tool Triggering (Synthetic Data)/complexipy/run_complexipy.sh", "status": "inactive"},
     {"dir": "symilar", "label": "symilar (pylint)", "role": "alternative",
-     "entrypoint": "tools/symilar/run_symilar.sh", "status": "inactive"},
+     "entrypoint": "Tool Triggering (Synthetic Data)/symilar/run_symilar.sh", "status": "inactive"},
     {"dir": "opengrep", "label": "Opengrep", "role": "alternative",
-     "entrypoint": "tools/opengrep/run_opengrep.sh", "status": "active"},
+     "entrypoint": "Tool Triggering (Synthetic Data)/opengrep/run_opengrep.sh", "status": "active"},
     {"dir": "opengrep-taint", "label": "Opengrep (taint mode)", "role": "alternative",
-     "entrypoint": "tools/opengrep-taint/run_opengrep_taint.sh", "status": "active"},
+     "entrypoint": "Tool Triggering (Synthetic Data)/opengrep-taint/run_opengrep_taint.sh", "status": "active"},
     {"dir": "trivy", "label": "Trivy", "role": "alternative",
-     "entrypoint": "tools/trivy/run_trivy.sh", "status": "active"},
+     "entrypoint": "Tool Triggering (Synthetic Data)/trivy/run_trivy.sh", "status": "active"},
     {"dir": "slipcover", "label": "SlipCover", "role": "alternative",
-     "entrypoint": "tools/slipcover/run_slipcover.sh", "status": "inactive"},
+     "entrypoint": "Tool Triggering (Synthetic Data)/slipcover/run_slipcover.sh", "status": "inactive"},
     {"dir": "mutmut", "label": "mutmut", "role": "alternative",
-     "entrypoint": "tools/mutmut/run_mutmut.sh", "status": "inactive"},
+     "entrypoint": "Tool Triggering (Synthetic Data)/mutmut/run_mutmut.sh", "status": "inactive"},
     {"dir": "diff-cover", "label": "diff-cover", "role": "alternative",
-     "entrypoint": "tools/diff-cover/run_diff_cover.sh", "status": "inactive"},
+     "entrypoint": "Tool Triggering (Synthetic Data)/diff-cover/run_diff_cover.sh", "status": "inactive"},
     {"dir": "astroid", "label": "astroid", "role": "alternative",
-     "entrypoint": "tools/astroid/run_astroid.py", "status": "inactive"},
+     "entrypoint": "Tool Triggering (Synthetic Data)/astroid/run_astroid.py", "status": "inactive"},
     {"dir": "pyan3", "label": "pyan3 + astroid", "role": "alternative",
-     "entrypoint": "tools/pyan3/run_pyan3.sh", "status": "inactive"},
+     "entrypoint": "Tool Triggering (Synthetic Data)/pyan3/run_pyan3.sh", "status": "inactive"},
     {"dir": "vulture", "label": "pylint + vulture", "role": "alternative",
-     "entrypoint": "tools/vulture/run_vulture.sh", "status": "inactive"},
+     "entrypoint": "Tool Triggering (Synthetic Data)/vulture/run_vulture.sh", "status": "inactive"},
     {"dir": "dulwich", "label": "dulwich", "role": "alternative",
-     "entrypoint": "tools/dulwich/run_dulwich.py", "status": "inactive"},
+     "entrypoint": "Tool Triggering (Synthetic Data)/dulwich/run_dulwich.py", "status": "inactive"},
     {"dir": "settrace", "label": "sys.settrace driver (stdlib)", "role": "alternative",
-     "entrypoint": "tools/settrace/run_settrace.py", "status": "active"},
+     "entrypoint": "Tool Triggering (Synthetic Data)/settrace/run_settrace.py", "status": "active"},
 ]
 
 
@@ -121,11 +121,11 @@ def verify():
     for row in WIRING:
         folder = os.path.join(TOOLS_DIR, row["dir"])
         if not os.path.isdir(folder):
-            problems.append("missing directory: tools/%s" % row["dir"])
+            problems.append("missing directory: Tool Triggering (Synthetic Data)/%s" % row["dir"])
             continue
         manifest = os.path.join(folder, "trigger.yaml")
         if not os.path.isfile(manifest):
-            problems.append("missing manifest: tools/%s/trigger.yaml" % row["dir"])
+            problems.append("missing manifest: Tool Triggering (Synthetic Data)/%s/trigger.yaml" % row["dir"])
         entry = os.path.join(ROOT, row["entrypoint"])
         if not os.path.isfile(entry):
             problems.append("missing entrypoint: %s" % row["entrypoint"])
@@ -134,9 +134,9 @@ def verify():
     present = set(n for n in os.listdir(TOOLS_DIR)
                   if os.path.isdir(os.path.join(TOOLS_DIR, n)) and not n.startswith("_"))
     for extra in sorted(present - declared):
-        problems.append("orphan tool directory with no wiring row: tools/%s" % extra)
+        problems.append("orphan tool directory with no wiring row: Tool Triggering (Synthetic Data)/%s" % extra)
     for missing in sorted(declared - present):
-        problems.append("wiring row with no directory: tools/%s" % missing)
+        problems.append("wiring row with no directory: Tool Triggering (Synthetic Data)/%s" % missing)
 
     if data["toolsWired"] != len(WIRING):
         problems.append("dataset.json says %d tools wired, wiring table has %d"
@@ -191,7 +191,7 @@ def run_all():
     if absent:
         print("INCOMPLETE  these tools are recorded ACTIVE but are not installed here: %s"
               % " ".join(sorted(absent)))
-        print("            See tools/<name>/INSTALL.md. Not a Python 3.6 finding.")
+        print("            See Tool Triggering (Synthetic Data)/<name>/INSTALL.md. Not a Python 3.6 finding.")
         return 1
     missing_active = sorted(expected_active - set(ran))
     if missing_active:
