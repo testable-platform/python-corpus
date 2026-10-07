@@ -1,6 +1,6 @@
 # conda environment for branch PY-152.
 #
-# conda can create a python=3.9.23 environment from conda-forge, but
+# conda can create a python=3.12.11 environment from conda-forge, but
 # conda.anaconda.org and repo.anaconda.com are both 403 at the egress
 # proxy of the host this corpus was built on, so no solved lock could
 # be produced here. This file is complete and solves on a machine with
